@@ -3,8 +3,7 @@ require "../config/database.php";
 require "../config/session.php";
 require_login();
 
-// ambil semua venue
-$q = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
+$q = $mysqli->query("SELECT * FROM venues WHERE status='available' ORDER BY id ASC");
 ?>
 <!DOCTYPE html>
 <html>

@@ -11,40 +11,62 @@ if (!isset($_GET['id'])) {
 $id = $_GET['id'];
 $venue = $mysqli->query("SELECT * FROM venues WHERE id=$id")->fetch_assoc();
 
-if (!$venue) {
-    die("Venue tidak ditemukan.");
-}
+if (!$venue) die("Venue tidak ditemukan!");
 
 $err = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $nama = $_POST['nama'];
-    $harga = $_POST['harga'];
+    $nama = $_POST['nama_venue'];
     $deskripsi = $_POST['deskripsi'];
+    $alamat = $_POST['alamat'];
+    $harga = $_POST['harga_per_jam'];
+    $fasilitas = $_POST['fasilitas'];
+    $status = $_POST['status'];
 
-    if (!$nama || !$harga) {
-        $err = "Nama dan harga wajib diisi!";
+    if (!$nama || !$alamat || !$harga) {
+        $err = "Nama, alamat, dan harga wajib diisi!";
     } else {
 
-        // cek jika ada upload gambar baru
         if (!empty($_FILES['gambar']['name'])) {
             $gambarName = time() . "_" . $_FILES['gambar']['name'];
             move_uploaded_file($_FILES['gambar']['tmp_name'], "../../assets/images/" . $gambarName);
 
             $stmt = $mysqli->prepare("
-                UPDATE venues SET nama=?, harga=?, deskripsi=?, gambar=? WHERE id=?
+                UPDATE venues 
+                SET nama_venue=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=?
+                WHERE id=?
             ");
-            $stmt->bind_param("sissi", $nama, $harga, $deskripsi, $gambarName, $id);
+            $stmt->bind_param(
+                "sssdsssi",
+                $nama,
+                $deskripsi,
+                $alamat,
+                $harga,
+                $fasilitas,
+                $gambarName,
+                $status,
+                $id
+            );
         } else {
             $stmt = $mysqli->prepare("
-                UPDATE venues SET nama=?, harga=?, deskripsi=? WHERE id=?
+                UPDATE venues 
+                SET nama_venue=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=?
+                WHERE id=?
             ");
-            $stmt->bind_param("sisi", $nama, $harga, $deskripsi, $id);
+            $stmt->bind_param(
+                "sssdssi",
+                $nama,
+                $deskripsi,
+                $alamat,
+                $harga,
+                $fasilitas,
+                $status,
+                $id
+            );
         }
 
         $stmt->execute();
-
         header("Location: index.php");
         exit;
     }
@@ -79,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
 
     <div class="container py-4">
+
         <h2 class="fw-bold mb-3">Edit Venue</h2>
 
         <?php if ($err): ?>
@@ -88,26 +111,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <form method="POST" enctype="multipart/form-data">
 
             <label>Nama Venue</label>
-            <input type="text" name="nama" value="<?= $venue['nama'] ?>" class="form-control mb-3" required>
-
-            <label>Harga per Jam</label>
-            <input type="number" name="harga" value="<?= $venue['harga'] ?>" class="form-control mb-3" required>
+            <input type="text" name="nama_venue" class="form-control mb-3" value="<?= $venue['nama_venue'] ?>" required>
 
             <label>Deskripsi</label>
             <textarea name="deskripsi" class="form-control mb-3"><?= $venue['deskripsi'] ?></textarea>
+
+            <label>Alamat</label>
+            <textarea name="alamat" class="form-control mb-3"><?= $venue['alamat'] ?></textarea>
+
+            <label>Harga per Jam</label>
+            <input type="number" name="harga_per_jam" class="form-control mb-3" value="<?= $venue['harga_per_jam'] ?>"
+                required>
+
+            <label>Fasilitas</label>
+            <textarea name="fasilitas" class="form-control mb-3"><?= $venue['fasilitas'] ?></textarea>
+
+            <label>Status</label>
+            <select name="status" class="form-control mb-3">
+                <option value="available" <?= $venue['status'] == 'available' ? 'selected' : '' ?>>Available</option>
+                <option value="unavailable" <?= $venue['status'] == 'unavailable' ? 'selected' : '' ?>>Unavailable
+                </option>
+            </select>
 
             <label>Gambar Baru (opsional)</label>
             <input type="file" name="gambar" class="form-control mb-3">
 
             <?php if ($venue['gambar']): ?>
-            <p>Gambar saat ini:</p>
-            <img src="../../assets/images/<?= $venue['gambar'] ?>" width="120">
+            <img src="../../assets/images/<?= $venue['gambar'] ?>" width="120" class="my-2">
             <?php endif; ?>
 
-            <br><br>
+            <br>
 
             <button class="btn btn-neon">Update</button>
-            <a href="index.php" class="btn btn-secondary">Kembali</a>
+            <a href="index.php" class="btn btn-secondary">Batal</a>
 
         </form>
 
