@@ -88,9 +88,10 @@ $q = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
                     <?php endif; ?>
 
                     <div class="card-body">
-                        <h5 class="card-title fw-bold"><?= $v['nama'] ?></h5>
+                        <h5 class="card-title fw-bold"><?= $v['nama_venue'] ?></h5>
                         <p><?= $v['deskripsi'] ?></p>
-                        <p class="fw-bold text-success">Rp <?= number_format($v['harga'], 0, ',', '.') ?>/jam</p>
+                        <p class="fw-bold text-success">Rp <?= number_format($v['harga_per_jam'], 0, ',', '.') ?>/jam
+                        </p>
 
                         <a href="booking.php?venue_id=<?= $v['id'] ?>" class="btn btn-neon w-100">
                             Pesan Sekarang

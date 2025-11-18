@@ -3,7 +3,6 @@ require "../../config/database.php";
 require "../../config/session.php";
 require_admin();
 
-// Ambil semua venue
 $venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
@@ -18,7 +17,6 @@ $venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
         --dark-blue: #0A2647;
         --neon-green: #00FF88;
         --light-gray: #E0E0E0;
-        --dark-gray: #1B1B1B;
     }
 
     body {
@@ -56,8 +54,7 @@ $venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
     </nav>
 
     <div class="container py-4">
-
-        <h2 class="fw-bold mb-3">Daftar Venue</h2>
+        <h2 class="fw-bold mb-3">Kelola Venue</h2>
 
         <a href="add.php" class="btn btn-neon mb-3">+ Tambah Venue</a>
 
@@ -67,8 +64,9 @@ $venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
                     <th>ID</th>
                     <th>Nama Venue</th>
                     <th>Gambar</th>
-                    <th>Harga/jam</th>
-                    <th>Deskripsi</th>
+                    <th>Alamat</th>
+                    <th>Harga / Jam</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -77,23 +75,29 @@ $venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
                 <?php while ($v = $venues->fetch_assoc()): ?>
                 <tr>
                     <td><?= $v['id'] ?></td>
-                    <td><?= $v['nama'] ?></td>
+                    <td><?= $v['nama_venue'] ?></td>
 
                     <td>
                         <?php if ($v['gambar']): ?>
                         <img src="../../assets/images/<?= $v['gambar'] ?>" width="80">
-                        <?php else: ?>
-                        -
-                        <?php endif; ?>
+                        <?php else: ?> - <?php endif; ?>
                     </td>
 
-                    <td>Rp <?= number_format($v['harga'], 0, ',', '.') ?></td>
-                    <td><?= $v['deskripsi'] ?></td>
+                    <td><?= $v['alamat'] ?></td>
+                    <td>Rp <?= number_format($v['harga_per_jam'], 0, ',', '.') ?></td>
+
+                    <td>
+                        <?php if ($v['status'] == 'available'): ?>
+                        <span class="badge bg-success">Available</span>
+                        <?php else: ?>
+                        <span class="badge bg-danger">Unavailable</span>
+                        <?php endif; ?>
+                    </td>
 
                     <td>
                         <a href="edit.php?id=<?= $v['id'] ?>" class="btn btn-warning btn-sm">Edit</a>
                         <a href="delete.php?id=<?= $v['id'] ?>" class="btn btn-danger btn-sm"
-                            onclick="return confirm('Yakin hapus venue ini?')">
+                            onclick="return confirm('Yakin hapus ini?')">
                             Hapus
                         </a>
                     </td>
@@ -103,6 +107,7 @@ $venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
         </table>
 
     </div>
+
 </body>
 
 </html>
