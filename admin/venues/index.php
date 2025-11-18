@@ -3,7 +3,7 @@ require "../../config/database.php";
 require "../../config/session.php";
 require_admin();
 
-$venues = $mysqli->query("SELECT * FROM venues ORDER BY id DESC");
+$venues = $mysqli->query("SELECT * FROM venues ORDER BY id ASC");
 ?>
 <!DOCTYPE html>
 <html>
