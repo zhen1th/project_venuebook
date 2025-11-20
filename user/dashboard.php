@@ -4,6 +4,14 @@ require "../config/session.php";
 require_login();
 
 $q = $mysqli->query("SELECT * FROM venues WHERE status='available' ORDER BY id DESC");
+
+function potongDeskripsi($text, $limit = 150)
+{
+    if (strlen($text) <= $limit) return $text;
+    return substr($text, 0, $limit) . "...";
+}
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,6 +56,27 @@ $q = $mysqli->query("SELECT * FROM venues WHERE status='available' ORDER BY id D
     .card-venue {
         border: 2px solid var(--dark-blue);
         border-radius: 10px;
+        min-height: 520px;
+        max-height: 520px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-venue img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .deskripsi-short {
+        flex-grow: 1;
     }
     </style>
 </head>
@@ -77,27 +106,29 @@ $q = $mysqli->query("SELECT * FROM venues WHERE status='available' ORDER BY id D
         <div class="row">
             <?php while ($v = $q->fetch_assoc()): ?>
             <div class="col-md-4 mb-4">
-                <div class="card card-venue">
+                <a href="venue_detail.php?id=<?= $v['id'] ?>" style="text-decoration:none; color:inherit;">
+                    <div class="card card-venue shadow" style="border-radius:12px;">
 
-                    <?php if ($v['gambar']): ?>
-                    <img src="../assets/images/<?= $v['gambar'] ?>" class="card-img-top"
-                        style="height:180px;object-fit:cover">
-                    <?php else: ?>
-                    <div style="height:180px;background:#ddd"></div>
-                    <?php endif; ?>
+                        <img src="../assets/images/<?= $v['gambar'] ?>">
 
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold"><?= $v['nama_venue'] ?></h5>
-                        <p><?= $v['deskripsi'] ?></p>
-                        <p class="fw-bold text-success">Rp <?= number_format($v['harga_per_jam'], 0, ',', '.') ?>/jam
-                        </p>
+                        <div class="card-body">
+                            <h4 class="fw-bold"><?= $v['nama_venue'] ?></h4>
 
-                        <a href="booking.php?venue_id=<?= $v['id'] ?>" class="btn btn-neon w-100">
-                            Pesan Sekarang
-                        </a>
+                            <p class="deskripsi-short">
+                                <?= potongDeskripsi($v['deskripsi'], 150) ?>
+                            </p>
+
+                            <h5 class="fw-bold text-success mt-auto">
+                                Rp <?= number_format($v['harga_per_jam'], 0, ',', '.') ?>/jam
+                            </h5>
+
+                            <div class="mt-3">
+                                <button class="btn btn-neon w-100">Pesan Sekarang</button>
+                            </div>
+                        </div>
+
                     </div>
-
-                </div>
+                </a>
             </div>
             <?php endwhile; ?>
         </div>

@@ -95,7 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <textarea name="alamat" class="form-control mb-3" required></textarea>
 
             <label>Harga per Jam</label>
-            <input type="number" name="harga_per_jam" class="form-control mb-3" required>
+            <input type="number" name="harga_per_jam" class="form-control mb-3" step="1" required>
+
 
             <label>Fasilitas</label>
             <textarea name="fasilitas" class="form-control mb-3"></textarea>
