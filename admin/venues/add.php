@@ -8,6 +8,7 @@ $err = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $nama = $_POST['nama_venue'];
+    $kategori = $_POST['kategori'];
     $deskripsi = $_POST['deskripsi'];
     $alamat = $_POST['alamat'];
     $harga = $_POST['harga_per_jam'];
@@ -23,23 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             move_uploaded_file($_FILES['gambar']['tmp_name'], "../../assets/images/" . $gambarName);
         }
 
-        $stmt = $mysqli->prepare("
-            INSERT INTO venues (nama_venue, deskripsi, alamat, harga_per_jam, fasilitas, gambar, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ");
+        $stmt = $mysqli->prepare("INSERT INTO venues (nama_venue, kategori, deskripsi, alamat, harga_per_jam, fasilitas, gambar, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
         if (!$stmt) die("SQL Error: " . $mysqli->error);
 
-        $stmt->bind_param(
-            "sssdsss",
-            $nama,
-            $deskripsi,
-            $alamat,
-            $harga,
-            $fasilitas,
-            $gambarName,
-            $status
-        );
+        $stmt->bind_param("ssssdsss", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $gambarName, $status);
 
         $stmt->execute();
         header("Location: index.php");
@@ -87,6 +76,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <label>Nama Venue</label>
             <input type="text" name="nama_venue" class="form-control mb-3" required>
+
+            <label class="fw-bold">Kategori</label>
+            <select name="kategori" class="form-control mb-3">
+                <option value="">Semua Kategori</option>
+                <option value="Sepakbola"
+                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Sepakbola" ? "selected" : "" ?>>Sepakbola
+                </option>
+                <option value="Futsal"
+                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Futsal" ? "selected" : "" ?>>Futsal</option>
+                <option value="Mini Soccer"
+                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Mini Soccer" ? "selected" : "" ?>>Mini Soccer
+                </option>
+                <option value="Basket"
+                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Basket" ? "selected" : "" ?>>Basket</option>
+                <option value="Voli" <?= isset($_GET['kategori']) && $_GET['kategori'] == "Voli" ? "selected" : "" ?>>
+                    Voli</option>
+                <option value="Bulu Tangkis"
+                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Bulu Tangkis" ? "selected" : "" ?>>Bulu
+                    Tangkis</option>
+                <option value="Tenis" <?= isset($_GET['kategori']) && $_GET['kategori'] == "Tenis" ? "selected" : "" ?>>
+                    Tenis</option>
+                <option value="Renang"
+                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Renang" ? "selected" : "" ?>>Renang</option>
+            </select>
+
 
             <label>Deskripsi</label>
             <textarea name="deskripsi" class="form-control mb-3"></textarea>

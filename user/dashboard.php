@@ -1,9 +1,8 @@
 <?php
 require "../config/database.php";
 require "../config/session.php";
-require_login();
 
-$q = $mysqli->query("SELECT * FROM venues WHERE status='available' ORDER BY id DESC");
+$user = $_SESSION['user'];
 
 function potongDeskripsi($text, $limit = 150)
 {
@@ -11,122 +10,219 @@ function potongDeskripsi($text, $limit = 150)
     return substr($text, 0, $limit) . "...";
 }
 
+$search = isset($_GET['search']) ? trim($_GET['search']) : "";
+$min_price = isset($_GET['min_price']) ? $_GET['min_price'] : "";
+$max_price = isset($_GET['max_price']) ? $_GET['max_price'] : "";
+$sort = isset($_GET['sort']) ? $_GET['sort'] : "";
 
+$query = "SELECT * FROM venues WHERE status='available'";
+
+if (isset($_GET['kategori']) && $_GET['kategori'] != "") {
+    $kategori = $mysqli->real_escape_string($_GET['kategori']);
+    $query .= " AND kategori = '$kategori'";
+}
+
+
+
+if ($search !== "") {
+    $query .= " AND (nama_venue LIKE '%$search%' OR alamat LIKE '%$search%')";
+}
+
+if ($min_price !== "") {
+    $query .= " AND harga_per_jam >= $min_price";
+}
+
+if ($max_price !== "") {
+    $query .= " AND harga_per_jam <= $max_price";
+}
+
+if ($sort == "low") {
+    $query .= " ORDER BY harga_per_jam ASC";
+} elseif ($sort == "high") {
+    $query .= " ORDER BY harga_per_jam DESC";
+} else {
+    $query .= " ORDER BY id ASC";
+}
+
+$venues = $mysqli->query($query);
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="id">
 
 <head>
-    <title>User Dashboard - VenueBook</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Dashboard User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
     :root {
         --dark-blue: #0A2647;
         --neon-green: #00FF88;
         --light-gray: #E0E0E0;
-        --white: #ffffff;
+        --white: #FFFFFF;
+        --dark-gray: #1B1B1B;
     }
 
     body {
-        background: var(--light-gray);
+        background: #e9ecef;
     }
 
-    .navbar-sporty {
+    .navbar {
         background: var(--dark-blue);
-        padding: 15px;
     }
 
-    .navbar-brand {
-        color: var(--neon-green) !important;
-        font-size: 1.6rem;
-        font-weight: bold;
-    }
-
-    .nav-link {
+    .navbar-brand,
+    .nav-link,
+    .nav-item {
         color: var(--white) !important;
     }
 
     .btn-neon {
         background: var(--neon-green);
-        color: var(--dark-blue);
+        color: #000;
         font-weight: bold;
+        border-radius: 10px;
     }
 
     .card-venue {
-        border: 2px solid var(--dark-blue);
-        border-radius: 10px;
-        min-height: 520px;
-        max-height: 520px;
+        height: 100%;
         display: flex;
         flex-direction: column;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .card-desc {
+        flex-grow: 1;
+        overflow: hidden;
+    }
+
+    .card-venue:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
     }
 
     .card-venue img {
         width: 100%;
         height: 220px;
         object-fit: cover;
-        border-radius: 12px 12px 0 0;
-    }
-
-    .card-body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .deskripsi-short {
-        flex-grow: 1;
+        border-radius: 5px;
     }
     </style>
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-sporty">
-        <div class="container">
-            <a class="navbar-brand">VenueBook</a>
+    <nav class="navbar navbar-expand-lg px-4 py-2">
+        <a class="navbar-brand fw-bold" href="#">VanueBook</a>
 
-            <div class="ms-auto">
-                <span class="text-white me-3">Halo, <?= $_SESSION['user']['nama'] ?></span>
-                <a href="../logout.php" class="btn btn-light">Logout</a>
-            </div>
+        <div class="ms-auto d-flex align-items-center gap-3">
+
+            <span class="text-white">
+                Halo, <strong><?= $user['nama'] ?></strong>
+            </span>
+
+            <a href="../logout.php" class="btn btn-danger btn-sm">Logout</a>
         </div>
     </nav>
 
-    <div class="container py-4">
 
-        <h2 class="fw-bold mb-4">Dashboard User</h2>
+    <div class="container mt-4">
 
-        <div class="d-flex justify-content-between mb-3">
-            <h4>Daftar Venue</h4>
-            <a href="my_bookings.php" class="btn btn-neon">Riwayat Booking</a>
-        </div>
+        <h3 class="fw-bold mb-3">Daftar Venue</h3>
+
+        <form method="GET" class="d-flex gap-2 mb-4">
+
+            <input type="text" name="search" class="form-control" placeholder="Cari venue atau lokasi..."
+                value="<?= htmlspecialchars($search) ?>">
+
+            <button class="btn btn-success" type="submit">
+                Search
+            </button>
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Filter
+                </button>
+                <div class="dropdown-menu p-3" style="width:260px;">
+
+                    <label class="fw-bold">Kategori</label>
+                    <select name="kategori" class="form-control mb-3">
+                        <option value="">Semua Kategori</option>
+                        <option value="Sepakbola"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Sepakbola" ? "selected" : "" ?>>
+                            Sepakbola</option>
+                        <option value="Futsal"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Futsal" ? "selected" : "" ?>>Futsal
+                        </option>
+                        <option value="Mini Soccer"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Mini Soccer" ? "selected" : "" ?>>Mini
+                            Soccer</option>
+                        <option value="Basket"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Basket" ? "selected" : "" ?>>Basket
+                        </option>
+                        <option value="Voli"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Voli" ? "selected" : "" ?>>Voli
+                        </option>
+                        <option value="Bulu Tangkis"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Bulu Tangkis" ? "selected" : "" ?>>
+                            Bulu Tangkis</option>
+                        <option value="Tenis"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Tenis" ? "selected" : "" ?>>Tenis
+                        </option>
+                        <option value="Renang"
+                            <?= isset($_GET['kategori']) && $_GET['kategori'] == "Renang" ? "selected" : "" ?>>Renang
+                        </option>
+                    </select>
+
+
+                    <label class="mb-1 fw-bold">Harga Minimum</label>
+                    <input type="number" name="min_price" class="form-control mb-2" value="<?= $min_price ?>">
+
+                    <label class="mb-1 fw-bold">Harga Maksimum</label>
+                    <input type="number" name="max_price" class="form-control mb-2" value="<?= $max_price ?>">
+
+                    <label class="fw-bold">Urutkan</label>
+                    <select name="sort" class="form-control mb-3">
+                        <option value="">Default</option>
+                        <option value="low" <?= $sort == "low" ? "selected" : "" ?>>Harga Terendah</option>
+                        <option value="high" <?= $sort == "high" ? "selected" : "" ?>>Harga Tertinggi</option>
+                    </select>
+
+                    <button class="btn btn-neon w-100 mb-2" type="submit">Terapkan</button>
+                    <a href="dashboard.php" class="btn btn-dark w-100">Reset</a>
+                </div>
+            </div>
+
+        </form>
 
         <div class="row">
-            <?php while ($v = $q->fetch_assoc()): ?>
+            <?php if ($venues->num_rows == 0): ?>
+            <p class="text-center text-muted mt-4">Tidak ada venue ditemukan.</p>
+            <?php endif; ?>
+
+            <?php while ($v = $venues->fetch_assoc()): ?>
             <div class="col-md-4 mb-4">
                 <a href="venue_detail.php?id=<?= $v['id'] ?>" style="text-decoration:none; color:inherit;">
-                    <div class="card card-venue shadow" style="border-radius:12px;">
+                    <div class="card card-venue shadow">
+                        <img src="../assets/images/<?= $v['gambar'] ?>" alt="Gambar Venue">
+                        <div class="card-body d-flex flex-column">
 
-                        <img src="../assets/images/<?= $v['gambar'] ?>">
-
-                        <div class="card-body">
                             <h4 class="fw-bold"><?= $v['nama_venue'] ?></h4>
 
-                            <p class="deskripsi-short">
-                                <?= potongDeskripsi($v['deskripsi'], 150) ?>
-                            </p>
+                            <p><?= potongDeskripsi($v['deskripsi'], 150) ?></p>
 
                             <h5 class="fw-bold text-success mt-auto">
                                 Rp <?= number_format($v['harga_per_jam'], 0, ',', '.') ?>/jam
                             </h5>
 
-                            <div class="mt-3">
-                                <button class="btn btn-neon w-100">Pesan Sekarang</button>
-                            </div>
+                            <button class="btn btn-neon mt-3">Pesan Sekarang</button>
                         </div>
-
                     </div>
                 </a>
             </div>
@@ -134,6 +230,8 @@ function potongDeskripsi($text, $limit = 150)
         </div>
 
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

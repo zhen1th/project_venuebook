@@ -18,6 +18,7 @@ $err = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $nama = $_POST['nama_venue'];
+    $kategori = $_POST['kategori'];
     $deskripsi = $_POST['deskripsi'];
     $alamat = $_POST['alamat'];
     $harga = $_POST['harga_per_jam'];
@@ -32,38 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $gambarName = time() . "_" . $_FILES['gambar']['name'];
             move_uploaded_file($_FILES['gambar']['tmp_name'], "../../assets/images/" . $gambarName);
 
-            $stmt = $mysqli->prepare("
-                UPDATE venues 
-                SET nama_venue=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=?
-                WHERE id=?
-            ");
-            $stmt->bind_param(
-                "sssdsssi",
-                $nama,
-                $deskripsi,
-                $alamat,
-                $harga,
-                $fasilitas,
-                $gambarName,
-                $status,
-                $id
-            );
+            $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=?WHERE id=?");
+            $stmt->bind_param("ssssdsssi", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $gambarName, $status, $id);
         } else {
-            $stmt = $mysqli->prepare("
-                UPDATE venues 
-                SET nama_venue=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=?
-                WHERE id=?
-            ");
-            $stmt->bind_param(
-                "sssdssi",
-                $nama,
-                $deskripsi,
-                $alamat,
-                $harga,
-                $fasilitas,
-                $status,
-                $id
-            );
+            $stmt = $mysqli->prepare("UPDATE venues ET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=? WHERE id=?");
+            $stmt->bind_param("ssssdssi", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $status, $id);
         }
 
         $stmt->execute();
