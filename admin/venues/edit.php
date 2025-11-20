@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=?WHERE id=?");
             $stmt->bind_param("ssssdsssi", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $gambarName, $status, $id);
         } else {
-            $stmt = $mysqli->prepare("UPDATE venues ET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=? WHERE id=?");
+            $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=? WHERE id=?");
             $stmt->bind_param("ssssdssi", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $status, $id);
         }
 
@@ -87,6 +87,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label>Nama Venue</label>
             <input type="text" name="nama_venue" class="form-control mb-3" value="<?= $venue['nama_venue'] ?>" required>
 
+            <div class="mb-3">
+                <label class="form-label fw-bold">Kategori</label>
+                <select name="kategori" class="form-control" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="Sepakbola" <?= $venue['kategori'] == "Sepakbola" ? "selected" : "" ?>>Sepakbola
+                    </option>
+                    <option value="Futsal" <?= $venue['kategori'] == "Futsal" ? "selected" : "" ?>>Futsal</option>
+                    <option value="Mini Soccer" <?= $venue['kategori'] == "Mini Soccer" ? "selected" : "" ?>>Mini Soccer
+                    </option>
+                    <option value="Basket" <?= $venue['kategori'] == "Basket" ? "selected" : "" ?>>Basket</option>
+                    <option value="Voli" <?= $venue['kategori'] == "Voli" ? "selected" : "" ?>>Voli</option>
+                    <option value="Bulu Tangkis" <?= $venue['kategori'] == "Bulu Tangkis" ? "selected" : "" ?>>Bulu
+                        Tangkis</option>
+                    <option value="Tenis" <?= $venue['kategori'] == "Tenis" ? "selected" : "" ?>>Tenis</option>
+                    <option value="Renang" <?= $venue['kategori'] == "Renang" ? "selected" : "" ?>>Renang</option>
+                    <option value="Gym" <?= $venue['kategori'] == "Gym" ? "selected" : "" ?>>Gym</option>
+                    <option value="Bela Diri" <?= $venue['kategori'] == "Bela Diri" ? "selected" : "" ?>>Bela Diri
+                    </option>
+                    <option value="Lainnya" <?= $venue['kategori'] == "Lainnya" ? "selected" : "" ?>>Lainnya</option>
+                </select>
+            </div>
+
             <label>Deskripsi</label>
             <textarea name="deskripsi" class="form-control mb-3"><?= $venue['deskripsi'] ?></textarea>
 
@@ -94,8 +116,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <textarea name="alamat" class="form-control mb-3"><?= $venue['alamat'] ?></textarea>
 
             <label>Harga per Jam</label>
-            <input type="number" name="harga_per_jam" class="form-control mb-3" step="1" required>
-
+            <input type="number" name="harga_per_jam" class="form-control" value="<?= $venue['harga_per_jam'] ?>"
+                required>
 
             <label>Fasilitas</label>
             <textarea name="fasilitas" class="form-control mb-3"><?= $venue['fasilitas'] ?></textarea>

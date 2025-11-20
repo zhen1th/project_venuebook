@@ -77,29 +77,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label>Nama Venue</label>
             <input type="text" name="nama_venue" class="form-control mb-3" required>
 
-            <label class="fw-bold">Kategori</label>
-            <select name="kategori" class="form-control mb-3">
-                <option value="">Semua Kategori</option>
-                <option value="Sepakbola"
-                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Sepakbola" ? "selected" : "" ?>>Sepakbola
-                </option>
-                <option value="Futsal"
-                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Futsal" ? "selected" : "" ?>>Futsal</option>
-                <option value="Mini Soccer"
-                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Mini Soccer" ? "selected" : "" ?>>Mini Soccer
-                </option>
-                <option value="Basket"
-                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Basket" ? "selected" : "" ?>>Basket</option>
-                <option value="Voli" <?= isset($_GET['kategori']) && $_GET['kategori'] == "Voli" ? "selected" : "" ?>>
-                    Voli</option>
-                <option value="Bulu Tangkis"
-                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Bulu Tangkis" ? "selected" : "" ?>>Bulu
-                    Tangkis</option>
-                <option value="Tenis" <?= isset($_GET['kategori']) && $_GET['kategori'] == "Tenis" ? "selected" : "" ?>>
-                    Tenis</option>
-                <option value="Renang"
-                    <?= isset($_GET['kategori']) && $_GET['kategori'] == "Renang" ? "selected" : "" ?>>Renang</option>
-            </select>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Kategori</label>
+                <select name="kategori" class="form-control" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="Sepakbola">Sepakbola</option>
+                    <option value="Futsal">Futsal</option>
+                    <option value="Mini Soccer">Mini Soccer</option>
+                    <option value="Basket">Basket</option>
+                    <option value="Voli">Voli</option>
+                    <option value="Bulu Tangkis">Bulu Tangkis</option>
+                    <option value="Tenis">Tenis</option>
+                    <option value="Renang">Renang</option>
+                    <option value="Gym">Gym</option>
+                    <option value="Bela Diri">Bela Diri</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
 
 
             <label>Deskripsi</label>
