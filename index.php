@@ -179,57 +179,10 @@ $carousel = $mysqli->query("
                 </div>
             </div>
 
-            <div class="row mb-5">
-                <div class="col-md-3 mb-3">
-                    <h6 class="fw-bold mb-3">Menu</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="user/dashboard.php" class="text-white-50 text-decoration-none">Cari Lapangan</a>
-                        </li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Tentang Kami</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Cara Booking</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <h6 class="fw-bold mb-3">Cabang Olahraga</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Futsal</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Mini Soccer</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Bulu Tangkis</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Tenis</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <h6 class="fw-bold mb-3">Hubungi Kami</h6>
-                    <ul class="list-unstyled">
-                        <li class="text-white-50">support@vanuebook.com</li>
-                        <li class="text-white-50">+62 812 3456 7890</li>
-                        <li class="text-white-50">Jakarta, Indonesia</li>
-                    </ul>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <h6 class="fw-bold mb-3">Ikuti Kami</h6>
-                    <div class="d-flex gap-3 fs-3">
-                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="text-white"><i class="bi bi-tiktok"></i></a>
-                    </div>
-                </div>
-            </div>
-
             <hr class="text-white-50">
 
             <div class="d-flex justify-content-between mt-3 flex-column flex-md-row text-center text-md-start">
                 <p class="text-white-50 mb-2 mb-md-0">© <?= date("Y") ?> VanueBook. All rights reserved.</p>
-
-                <div class="text-white-50">
-                    <a href="#" class="text-white-50 text-decoration-none me-3">Privasi</a>
-                    <a href="#" class="text-white-50 text-decoration-none me-3">Syarat & Ketentuan</a>
-                    <a href="#" class="text-white-50 text-decoration-none">Bantuan</a>
-                </div>
             </div>
 
         </div>
