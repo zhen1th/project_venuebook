@@ -58,7 +58,9 @@ if (!$venue) {
 
             <h2 class="fw-bold"><?= $venue['nama_venue'] ?></h2>
 
-            <p class="mt-3"><b>Deskripsi:</b> <?= $venue['deskripsi'] ?></p>
+            <p class="mt-3"><b>Deskripsi:</b>
+            <p><?= $venue['deskripsi'] ?></p>
+            </p>
             <p><b>Alamat:</b> <?= $venue['alamat'] ?></p>
             <p><b>Fasilitas:</b> <?= $venue['fasilitas'] ?></p>
 

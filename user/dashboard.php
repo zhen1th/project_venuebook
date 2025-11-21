@@ -1,8 +1,9 @@
 <?php
 require "../config/database.php";
-require "../config/session.php";
+require "../config/session.php"; 
 
-$user = $_SESSION['user'];
+
+$user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 
 function potongDeskripsi($text, $limit = 150)
 {
@@ -21,8 +22,6 @@ if (isset($_GET['kategori']) && $_GET['kategori'] != "") {
     $kategori = $mysqli->real_escape_string($_GET['kategori']);
     $query .= " AND kategori = '$kategori'";
 }
-
-
 
 if ($search !== "") {
     $query .= " AND (nama_venue LIKE '%$search%' OR alamat LIKE '%$search%')";
@@ -46,7 +45,6 @@ if ($sort == "low") {
 
 $venues = $mysqli->query($query);
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -123,21 +121,28 @@ $venues = $mysqli->query($query);
 
         <div class="ms-auto d-flex align-items-center gap-3">
 
+            <?php if ($user): ?>
             <span class="text-white">
                 Halo, <strong><?= $user['nama'] ?></strong>
             </span>
 
             <a href="../logout.php" class="btn btn-danger btn-sm">Logout</a>
+
+            <?php else: ?>
+            <div class="ms-auto">
+                <a href="../login.php" class="btn btn-light me-2">Login</a>
+                <a href="../register.php" class="btn btn-success">Register</a>
+            </div>
+            <?php endif; ?>
+
         </div>
     </nav>
-
 
     <div class="container mt-4">
 
         <h3 class="fw-bold mb-3">Daftar Venue</h3>
 
         <form method="GET" class="d-flex gap-2 mb-4">
-
             <input type="text" name="search" class="form-control" placeholder="Cari venue atau lokasi..."
                 value="<?= htmlspecialchars($search) ?>">
 
@@ -150,7 +155,6 @@ $venues = $mysqli->query($query);
                     Filter
                 </button>
                 <div class="dropdown-menu p-3" style="width:260px;">
-
                     <label class="fw-bold">Kategori</label>
                     <select name="kategori" class="form-control mb-3">
                         <option value="">Semua Kategori</option>
@@ -179,8 +183,6 @@ $venues = $mysqli->query($query);
                             <?= isset($_GET['kategori']) && $_GET['kategori'] == "Renang" ? "selected" : "" ?>>Renang
                         </option>
                     </select>
-
-
                     <label class="mb-1 fw-bold">Harga Minimum</label>
                     <input type="number" name="min_price" class="form-control mb-2" value="<?= $min_price ?>">
 
@@ -198,7 +200,6 @@ $venues = $mysqli->query($query);
                     <a href="dashboard.php" class="btn btn-dark w-100">Reset</a>
                 </div>
             </div>
-
         </form>
 
         <div class="row">
