@@ -63,24 +63,36 @@ $carousel = $mysqli->query("
 
     <div class="container mt-4">
 
-        <form action="user/dashboard.php" method="GET" class="row g-3">
+        <form action="user/dashboard.php" method="GET" class="d-flex gap-2 mb-4">
 
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <input type="text" name="search" placeholder="Cari venue atau lokasi..." class="form-control">
             </div>
 
-            <div class="col-md-3">
-                <select name="kategori" class="form-select">
-                    <option value="">Semua Kategori</option>
-                    <option value="Futsal">Futsal</option>
-                    <option value="Sepak Bola">Sepak Bola</option>
-                    <option value="Badminton">Badminton</option>
-                    <option value="Basket">Basket</option>
-                </select>
-            </div>
+            <button class="btn btn-success" type="submit">
+                Search
+            </button>
 
-            <div class="col-md-3">
-                <button class="btn btn-neon w-100">Cari Sekarang</button>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Filter
+                </button>
+                <div class="dropdown-menu p-3" style="width:260px;">
+                    <label class="fw-bold">Kategori</label>
+                    <select name="kategori" class="form-control mb-3">
+                        <option value="">Semua Kategori</option>
+                        <option value="Sepakbola">Sepakbola</option>
+                        <option value="Futsal">Futsal</option>
+                        <option value="Mini Soccer">Mini Soccer</option>
+                        <option value="Basket">Basket</option>
+                        <option value="Voli">Voli</option>
+                        <option value="Bulu Tangkis">Bulu Tangkis</option>
+                        <option value="Tenis">Tenis</option>
+                        <option value="Renang">Renang</option>
+                    </select>
+                    <button class="btn btn-neon w-100 mb-2" type="submit">Terapkan</button>
+                    <a href="dashboard.php" class="btn btn-dark w-100">Reset</a>
+                </div>
             </div>
 
         </form>
