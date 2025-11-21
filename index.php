@@ -161,71 +161,80 @@ $carousel = $mysqli->query("
         </div>
     </div>
 
-    <footer style="background:#0A2647; color:white; padding:60px 0; margin-top:80px;">
+    <footer style="background:#0A2647; color:white; padding:60px 0 35px 0; margin-top:90px;">
         <div class="container">
 
-            <div class="row">
-
-                <div class="col-md-4 mb-4">
-                    <h3 class="fw-bold">VanueBook</h3>
-                    <p class="mt-3" style="line-height:1.7;">
-                        Jl. Contoh Raya No. 123<br>
-                        Jakarta Pusat 10340<br>
-                        Indonesia
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6 mb-3">
+                    <h2 class="fw-bold">VanueBook</h2>
+                    <p class="text-white-50 mt-2" style="max-width:400px;">
+                        Platform booking lapangan olahraga yang memudahkan kamu menemukan venue terbaik, kapan pun & di
+                        mana pun.
                     </p>
-
-                    <div class="d-flex gap-3 mt-3">
-                        <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="bi bi-youtube"></i></a>
-                    </div>
                 </div>
 
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold mb-3">Perusahaan</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Tentang</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Kebijakan Privasi</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Syarat & Ketentuan</a></li>
-                    </ul>
+                <div class="col-md-6 text-md-end">
+                    <a href="register.php" class="btn btn-success me-2 px-4 py-2 fw-bold">Daftar Sekarang</a>
+                    <a href="login.php" class="btn btn-outline-light px-4 py-2 fw-bold">Login</a>
                 </div>
-
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold mb-3">Ecosystem</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Sparring</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Main Bareng</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Direktori Tim</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Direktori Lapangan</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold mb-3">Hubungi Kami</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white-50 text-decoration-none">Kontak</a></li>
-                        <li><a href="#" class="text-white-50 text-decoration-none">Email Support</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-2 mb-4">
-                    <h5 class="fw-bold mb-3">Unduh Aplikasi</h5>
-                    <div class="d-flex gap-3 fs-3">
-                        <i class="bi bi-google-play text-white-50"></i>
-                        <i class="bi bi-apple text-white-50"></i>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="text-center mt-4 text-white-50" style="font-size:14px;">
-                © <?= date("Y") ?> VanueBook — All Rights Reserved.
+            <div class="row mb-5">
+                <div class="col-md-3 mb-3">
+                    <h6 class="fw-bold mb-3">Menu</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="user/dashboard.php" class="text-white-50 text-decoration-none">Cari Lapangan</a>
+                        </li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Tentang Kami</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Cara Booking</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <h6 class="fw-bold mb-3">Cabang Olahraga</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50 text-decoration-none">Futsal</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Mini Soccer</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Bulu Tangkis</a></li>
+                        <li><a href="#" class="text-white-50 text-decoration-none">Tenis</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <h6 class="fw-bold mb-3">Hubungi Kami</h6>
+                    <ul class="list-unstyled">
+                        <li class="text-white-50">support@vanuebook.com</li>
+                        <li class="text-white-50">+62 812 3456 7890</li>
+                        <li class="text-white-50">Jakarta, Indonesia</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <h6 class="fw-bold mb-3">Ikuti Kami</h6>
+                    <div class="d-flex gap-3 fs-3">
+                        <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="text-white-50">
+
+            <div class="d-flex justify-content-between mt-3 flex-column flex-md-row text-center text-md-start">
+                <p class="text-white-50 mb-2 mb-md-0">© <?= date("Y") ?> VanueBook. All rights reserved.</p>
+
+                <div class="text-white-50">
+                    <a href="#" class="text-white-50 text-decoration-none me-3">Privasi</a>
+                    <a href="#" class="text-white-50 text-decoration-none me-3">Syarat & Ketentuan</a>
+                    <a href="#" class="text-white-50 text-decoration-none">Bantuan</a>
+                </div>
             </div>
 
         </div>
     </footer>
+
 
 
 
