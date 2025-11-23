@@ -3,7 +3,6 @@ require "../config/database.php";
 require "../config/session.php";
 require_admin();
 
-// hitung statistik
 $totalVenue = $mysqli->query("SELECT COUNT(*) AS c FROM venues")->fetch_assoc()['c'];
 $totalUser  = $mysqli->query("SELECT COUNT(*) AS c FROM users WHERE role='user'")->fetch_assoc()['c'];
 $totalBook  = $mysqli->query("SELECT COUNT(*) AS c FROM bookings")->fetch_assoc()['c'];
