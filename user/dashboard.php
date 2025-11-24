@@ -1,7 +1,6 @@
 <?php
 require "../config/database.php";
-require "../config/session.php"; 
-
+require "../config/session.php";
 
 $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 
@@ -11,29 +10,41 @@ function potongDeskripsi($text, $limit = 150)
     return substr($text, 0, $limit) . "...";
 }
 
-$search = isset($_GET['search']) ? trim($_GET['search']) : "";
-$min_price = isset($_GET['min_price']) ? $_GET['min_price'] : "";
-$max_price = isset($_GET['max_price']) ? $_GET['max_price'] : "";
-$sort = isset($_GET['sort']) ? $_GET['sort'] : "";
+$search     = isset($_GET['search']) ? trim($_GET['search']) : "";
+$kategori   = isset($_GET['kategori']) ? trim($_GET['kategori']) : "";
+$min_price  = isset($_GET['min_price']) ? trim($_GET['min_price']) : "";
+$max_price  = isset($_GET['max_price']) ? trim($_GET['max_price']) : "";
+$sort       = isset($_GET['sort']) ? trim($_GET['sort']) : "";
 
-$query = "SELECT * FROM venues WHERE status='available'";
 
-if (isset($_GET['kategori']) && $_GET['kategori'] != "") {
-    $kategori = $mysqli->real_escape_string($_GET['kategori']);
-    $query .= " AND kategori = '$kategori'";
+$query = "SELECT * FROM venues WHERE status = 'available'";
+
+
+if ($kategori !== "") {
+    $kategori_safe = $mysqli->real_escape_string($kategori);
+    $query .= " AND kategori = '$kategori_safe'";
 }
+
 
 if ($search !== "") {
-    $query .= " AND (nama_venue LIKE '%$search%' OR alamat LIKE '%$search%')";
+    $search_safe = strtolower($mysqli->real_escape_string($search));
+    $query .= " AND (
+        LOWER(nama_venue) LIKE '%$search_safe%' OR
+        LOWER(alamat) LIKE '%$search_safe%' OR
+        LOWER(kategori) LIKE '%$search_safe%' OR
+        LOWER(deskripsi) LIKE '%$search_safe%'
+    )";
 }
 
-if ($min_price !== "") {
+
+if ($min_price !== "" && is_numeric($min_price)) {
     $query .= " AND harga_per_jam >= $min_price";
 }
 
-if ($max_price !== "") {
+if ($max_price !== "" && is_numeric($max_price)) {
     $query .= " AND harga_per_jam <= $max_price";
 }
+
 
 if ($sort == "low") {
     $query .= " ORDER BY harga_per_jam ASC";
@@ -42,6 +53,7 @@ if ($sort == "low") {
 } else {
     $query .= " ORDER BY id ASC";
 }
+
 
 $venues = $mysqli->query($query);
 ?>
