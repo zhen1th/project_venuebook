@@ -33,7 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $gambarName = time() . "_" . $_FILES['gambar']['name'];
             move_uploaded_file($_FILES['gambar']['tmp_name'], "../../assets/images/" . $gambarName);
 
-            $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=?WHERE id=?");
+            $stmt = $mysqli->prepare("
+    UPDATE venues 
+    SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=? 
+    WHERE id=?
+");
+
             $stmt->bind_param("ssssdsssi", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $gambarName, $status, $id);
         } else {
             $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=? WHERE id=?");
@@ -54,21 +59,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-    :root {
-        --dark-blue: #0A2647;
-        --neon-green: #00FF88;
-        --light-gray: #E0E0E0;
-    }
+        :root {
+            --dark-blue: #0A2647;
+            --neon-green: #00FF88;
+            --light-gray: #E0E0E0;
+        }
 
-    body {
-        background: var(--light-gray);
-    }
+        body {
+            background: var(--light-gray);
+        }
 
-    .btn-neon {
-        background: var(--neon-green);
-        color: var(--dark-blue);
-        font-weight: bold;
-    }
+        .btn-neon {
+            background: var(--neon-green);
+            color: var(--dark-blue);
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -79,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h2 class="fw-bold mb-3">Edit Venue</h2>
 
         <?php if ($err): ?>
-        <div class="alert alert-danger"><?= $err ?></div>
+            <div class="alert alert-danger"><?= $err ?></div>
         <?php endif; ?>
 
         <form method="POST" enctype="multipart/form-data">
@@ -133,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="file" name="gambar" class="form-control mb-3">
 
             <?php if ($venue['gambar']): ?>
-            <img src="../../assets/images/<?= $venue['gambar'] ?>" width="120" class="my-2">
+                <img src="../../assets/images/<?= $venue['gambar'] ?>" width="120" class="my-2">
             <?php endif; ?>
 
             <br>
