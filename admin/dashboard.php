@@ -100,7 +100,7 @@ $totalBook  = $mysqli->query("SELECT COUNT(*) AS c FROM bookings")->fetch_assoc(
 
         <div class="mt-4">
             <a href="venues/index.php" class="btn btn-neon me-3">Kelola Venue</a>
-            <a href="bookings.php" class="btn btn-neon">Kelola Booking</a>
+            <a href="booking.php" class="btn btn-neon">Kelola Booking</a>
         </div>
 
     </div>
