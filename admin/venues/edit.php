@@ -33,7 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $gambarName = time() . "_" . $_FILES['gambar']['name'];
             move_uploaded_file($_FILES['gambar']['tmp_name'], "../../assets/images/" . $gambarName);
 
-            $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=?WHERE id=?");
+            $stmt = $mysqli->prepare("
+    UPDATE venues 
+    SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, gambar=?, status=? 
+    WHERE id=?
+");
+
             $stmt->bind_param("ssssdsssi", $nama, $kategori, $deskripsi, $alamat, $harga, $fasilitas, $gambarName, $status, $id);
         } else {
             $stmt = $mysqli->prepare("UPDATE venues SET nama_venue=?, kategori=?, deskripsi=?, alamat=?, harga_per_jam=?, fasilitas=?, status=? WHERE id=?");
