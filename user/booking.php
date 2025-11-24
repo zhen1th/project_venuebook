@@ -52,7 +52,7 @@ if (
     $slots = json_decode($_POST['slots'] ?? '[]', true);
     $total_client = floatval($_POST['total'] ?? 0);
 
-    /* --- valid date format --- */
+    
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $tanggal)) {
         $error = "Tanggal tidak valid.";
     } elseif ($tanggal < date("Y-m-d")) {
@@ -548,5 +548,6 @@ sort($booked_hours);
         });
     </script>
 </body>
+
 
 </html>
